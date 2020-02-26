@@ -7,7 +7,8 @@ WORKDIR /app
 # COPY build/libs/gs-spring-boot-docker-0.1.0.jar /app
 COPY build/libs/datadog-java-apm-example.jar /app
 # Might be hacky -- dunno
-COPY datadog/dd-java-agent.jar /app
+# https://github.com/DataDog/dd-trace-java/releases
+COPY datadog/dd-java-agent-0.43.0.jar /app/dd-java-agent.jar
 
 # Fix for https://stackoverflow.com/questions/6784463/error-trustanchors-parameter-must-be-non-empty
 # CMD sudo /var/lib/dpkg/info/ca-certificates-java.postinst configure

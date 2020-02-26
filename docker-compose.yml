@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  java:
+    build: dd-java-example
+    ports:
+      - "8081:8080"
+    environment:
+      - DD_AGENT_IP=datadog
+  datadog:
+    image: datadog/agent:7
+    environment:
+      - DD_APM_DD_URL=https://trace.agent.datadoghq.eu
+      - DD_API_KEY
+      # https://github.com/burningion/distributed-tracing-with-apm-workshop/blob/master/docker-compose.yml
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+      - DD_PROCESS_AGENT_ENABLED=true
+      - DD_TAGS='env:apm-workshop'
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock
+     - /proc/:/host/proc/:ro
+     - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
