@@ -8,10 +8,14 @@ services:
     environment:
       - DD_AGENT_IP=datadog
       - DD_TRACE_DEBUG=true
+      - DD_SERVICE_NAME=java-example
       - DD_TRACE_GLOBAL_TAGS=env:workshop,foo:bar
   # https://docs.datadoghq.com/agent/docker
   datadog:
     image: datadog/agent:7
+    ports:
+      # Probably for custom metrics only
+      # - "8125:8125/udp" # https://docs.datadoghq.com/developers/dogstatsd/?tab=containeragent#setup
     environment:
       - DD_API_KEY # Get from shell
       - DD_SITE=datadoghq.eu
@@ -21,8 +25,9 @@ services:
       # https://github.com/burningion/distributed-tracing-with-apm-workshop/blob/master/docker-compose.yml
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_PROCESS_AGENT_ENABLED=true
+      # - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
       - DD_TAGS='env:apm-workshop'
     volumes:
-     - /var/run/docker.sock:/var/run/docker.sock
+     - /var/run/docker.sock:/var/run/docker.sock:ro
      - /proc/:/host/proc/:ro
      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
