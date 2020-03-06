@@ -1,6 +1,7 @@
 FROM openjdk:12
-ARG DD_AGENT_IP
-ENV DD_IP=${DD_AGENT_IP}
+# ARG DD_AGENT_IP
+# ENV DD_IP=${DD_AGENT_IP}
+ENV DD_AGENT_IP=localhost
 
 # copy over our app
 WORKDIR /app
@@ -17,4 +18,4 @@ COPY datadog/dd-java-agent-0.43.0.jar /app/dd-java-agent.jar
 EXPOSE 8080
 
 # use shell form of entrypoint rather than exec so we can take advantage of variables
-ENTRYPOINT java -javaagent:/app/dd-java-agent.jar -Ddd.service.name=dd-java-apm-example-openjdk -Ddd.agent.host=$DD_IP -Ddatadog.slf4j.simpleLogger.defaultLogLevel=debug -jar /app/datadog-java-apm-example.jar
+ENTRYPOINT java -javaagent:/app/dd-java-agent.jar -Ddd.service.name=dd-java-apm-example-openjdk -Ddd.agent.host=${DD_AGENT_IP} -Ddatadog.slf4j.simpleLogger.defaultLogLevel=debug -jar /app/datadog-java-apm-example.jar
